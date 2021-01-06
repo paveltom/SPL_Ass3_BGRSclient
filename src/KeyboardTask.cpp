@@ -6,7 +6,7 @@
 #include <thread>
 
 
-KeyboardTask::KeyboardTask(const ConnectionHandler& ch, int id, std::mutex& mutex) : Task(ch, id, mutex) {}
+KeyboardTask::KeyboardTask(ConnectionHandler& ch, int id, std::mutex& mutex) : Task(ch, id, mutex) {}
 
 KeyboardTask::~KeyboardTask() = default;
 
@@ -19,7 +19,7 @@ void KeyboardTask::run() {
         std::cin.getline(buf, bufsize);
         std::string line(buf);
         int len = line.length();
-        if (!_ch.sendLine(line)) {
+        if (!(_ch.sendLine(line))) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }

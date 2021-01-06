@@ -5,7 +5,7 @@
 #include <mutex>
 #include <thread>
 
-NetTask::NetTask(const ConnectionHandler& ch, int id, std::mutex& mutex) : Task(ch, id, mutex) {}
+NetTask::NetTask(ConnectionHandler& ch, int id, std::mutex& mutex) : Task(ch, id, mutex) {}
 
 NetTask::~NetTask() = default;
 

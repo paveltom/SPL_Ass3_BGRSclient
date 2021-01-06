@@ -8,7 +8,7 @@ find_package(Boost 1.45.0 COMPONENTS)
 
 set(CMAKE_CXX_STANDARD 11)
 
-include_directories(include)
-
+link_libraries("-lboost_system")
+link_libraries(-pthread)
 add_executable(BGRSclient src/main.cpp src/ConnectionHandler.cpp src/EncoderDecoder.cpp src/Task.cpp src/KeyboardTask.cpp src/NetTask.cpp)
 

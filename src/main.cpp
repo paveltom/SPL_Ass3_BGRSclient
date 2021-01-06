@@ -15,26 +15,26 @@ using namespace std;
 int main (int argc, char *argv[]) {
 
     if (argc < 3) {
-        std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
+        cerr << "Usage: " << argv[0] << " host port" << endl << endl;
         return -1;
     }
 
-    std::string host = argv[1];
+    string host = argv[1];
     short port = atoi(argv[2]);
     
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
-        std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
+        cerr << "Cannot connect to " << host << ":" << port << endl;
         return 1;
     }
 
-    std::mutex mutex;//probably not needed
+    mutex mutex;//probably not needed
 
     KeyboardTask keyboardTask(connectionHandler, 1, mutex);
     NetTask netTask(connectionHandler, 2, mutex);
 
-    std::thread th1(&Task::run, &keyboardTask);
-    std::thread th2(&Task::run, &netTask);
+    thread th1(&Task::run, &keyboardTask);
+    thread th2(&Task::run, &netTask);
 
     th1.join(); // or detach()?
     th2.join(); //or detach()?

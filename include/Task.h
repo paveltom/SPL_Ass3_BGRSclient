@@ -10,14 +10,16 @@
 
 class Task{
 public:
-    Task (const ConnectionHandler& ch, int id, std::mutex& mutex);
+    Task (ConnectionHandler& ch, int id, std::mutex& mutex);
     virtual ~Task();
     virtual void run() = 0;
 
 protected:
+    ConnectionHandler& _ch;
+
+private:
     int _id;
     std::mutex& _mutex;
-    const ConnectionHandler& _ch;
 };
 
 //        for (int i= 0; i < 100; i++){
@@ -29,7 +31,7 @@ protected:
 
 class KeyboardTask : public Task{
 public:
-    KeyboardTask(const ConnectionHandler& ch, int id, std::mutex& mutex);
+    KeyboardTask(ConnectionHandler& ch, int id, std::mutex& mutex);
     virtual ~KeyboardTask();
     KeyboardTask(const KeyboardTask& aCT); //copy constructor
 
@@ -38,7 +40,7 @@ public:
 
 class NetTask : public Task{
 public:
-    NetTask(const ConnectionHandler& ch, int id, std::mutex& mutex);
+    NetTask(ConnectionHandler& ch, int id, std::mutex& mutex);
     virtual ~NetTask();
     NetTask(const NetTask& aCT); //copy constructor
 

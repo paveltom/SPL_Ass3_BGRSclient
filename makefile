@@ -1,5 +1,5 @@
 CFLAGS:=-c -Wall -Weffc++ -g -std=c++11 -Iinclude
-LDFLAGS:=-lboost_system -pthread -lboost_thread
+LDFLAGS:=-lboost_system -lpthread -lboost_thread
 
 
 all: BGRSclient
@@ -7,7 +7,7 @@ all: BGRSclient
 BGRSclient: bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o
 	@echo 'Building target: BGRSclient'
 	@echo 'Invoking: C++ Linker'
-	g++ -o bin/BGRSclient bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o $(LDFLAGS)
+	g++ -Wall -Weffc++ -o bin/BGRSclient bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o $(LDFLAGS)
 	@echo 'Finished building target: BGRSclient'
 	@echo ' '
 
