@@ -13,7 +13,9 @@ using namespace std;
 * This code assumes that the server replies the exact text the client sent it (as opposed to the practical session example)
 */
 int main (int argc, char *argv[]) {
-
+    EncoderDecoder* enc = new EncoderDecoder();
+    string msg = "COURSEREG 32";
+    enc->encode(msg);
     if (argc < 3) {
         cerr << "Usage: " << argv[0] << " host port" << endl << endl;
         return -1;
