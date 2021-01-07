@@ -1,6 +1,7 @@
 #ifndef CONNECTION_HANDLER__
 #define CONNECTION_HANDLER__
-                                           
+
+#include "../include/EncoderDecoder.h"
 #include <string>
 #include <iostream>
 #include <boost/asio.hpp>
@@ -12,12 +13,13 @@ private:
 	const std::string host_;
 	const short port_;
 	boost::asio::io_service io_service_;   // Provides core I/O functionality
-	tcp::socket socket_; 
+	tcp::socket socket_;
+	EncoderDecoder* encdec;
  
 public:
     ConnectionHandler(std::string host, short port);
     virtual ~ConnectionHandler();
- 
+
     // Connect to the remote machine
     bool connect();
  

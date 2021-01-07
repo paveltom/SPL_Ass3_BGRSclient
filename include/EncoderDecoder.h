@@ -12,8 +12,8 @@ class EncoderDecoder {
 public:
     EncoderDecoder();
 
-    const char* encode(string& msg); //returns bytes[]
-    const string decode( char bytes[]); // why const char in argument??
+    char* encode(const std::string& msg, string& size); //returns bytes[]
+//    const string decode( char bytes[]); // why const char in argument??
     short bytesToShort(char* bytesArr);
     void shortToBytes(short num, char* bytesArr);
 
