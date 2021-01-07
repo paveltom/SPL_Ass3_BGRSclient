@@ -12,12 +12,14 @@ NetTask::~NetTask() = default;
 NetTask::NetTask(const NetTask& aCT) = default;
 
 void NetTask::run() {
+    //boost::asio::io_service io;
     while (1) {
-        const short bufsize = 1024;
-        char buf[bufsize];
-        std::string line(buf);
+        std::string line;
+//        boost::asio::deadline_timer timer(io, boost::posix_time::seconds(1));
+//        timer.wait();
+
         if (!_ch.getLine(line)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            std::cout << "NetTask: Disconnected. Exiting...\n" << std::endl;
             break;
         }
         //int len = line.length();

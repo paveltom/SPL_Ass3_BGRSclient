@@ -2,6 +2,7 @@
 #include "../include/Task.h"
 #include "../include/EncoderDecoder.h"
 #include <iostream>
+#include <condition_variable>
 
 int main(int argc, char** argv) {
 
@@ -24,15 +25,17 @@ int main(int argc, char** argv) {
     //KeyboardTask keyboardTask(connectionHandler, 1, mutex);
     NetTask netTask(connectionHandler, 2, mutex);
     std::thread::id mainThread = std::this_thread::get_id();
-    //std::thread th2(&Task::run, &netTask);
-    //th2.detach();
+    std::thread th2(&Task::run, &netTask);
+    std::condition_variable cv;
+    th2.detach();
 
     while (1) {
+        //std::lock_guard<std::mutex> lockGuard(mutex);
         const short bufsize = 1024;
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);;
-        if (!connectionHandler.sendLine(line)) {
+        if (!connectionHandler.sendBytes(line)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
@@ -46,12 +49,14 @@ int main(int argc, char** argv) {
 
 //        len=answer.length();
 //
+
+        cv.notify_all();
         if (line == "LOGOUT") {
             std::cout << "Exiting...\n" << std::endl;
             break;
         }
     }
-    //th2.join();
+    th2.join();
     return 0;
 }
 

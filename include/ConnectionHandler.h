@@ -29,7 +29,7 @@ public:
  
 	// Send a fixed number of bytes from the client - blocking.
     // Returns false in case the connection is closed before all the data is sent.
-    bool sendBytes(const char bytes[], int bytesToWrite);
+    bool sendBytes(const std::string& msg);
 	
     // Read an ascii line from the server
     // Returns false in case connection closed before a newline can be read.
@@ -37,7 +37,7 @@ public:
 	
 	// Send an ascii line from the server
     // Returns false in case connection closed before all the data is sent.
-    bool sendLine(std::string& line);
+//    bool sendLine(std::string& line);
  
     // Get Ascii data from the server until the delimiter character
     // Returns false in case connection closed before null can be read.
@@ -45,7 +45,7 @@ public:
  
     // Send a message to the remote host.
     // Returns false in case connection is closed before all the data is sent.
-    bool sendFrameAscii(const std::string& frame, char delimiter);
+//    bool sendFrameAscii(const std::string& frame, char delimiter);
 	
     // Close down the connection properly.
     void close();

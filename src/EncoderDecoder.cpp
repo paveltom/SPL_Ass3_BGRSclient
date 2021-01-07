@@ -6,7 +6,7 @@ EncoderDecoder::EncoderDecoder() {}
 //const string EncoderDecoder::decode(const char *bytes) {
 //
 //}
-char* EncoderDecoder::encode(const std::string& msg, string& size) {
+char* EncoderDecoder::encode(const std::string& msg, string& size, char* output) {
     static char bytes[1 << 10];
     std::string delimiter = " ";
     std::string opString = msg.substr(0, msg.find(delimiter));
@@ -29,9 +29,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size) {
         }
         curI += password.length();
         bytes[curI] = 0;
-        size = to_string(curI);
-//        for (int i = 0; i < curI; i++)
-//            msg[i] = bytes[i];
+        size = to_string(curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        std::memcpy(output, bytes, curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        output[curI] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        output[curI + 1] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return bytes;
     }
 //    if(opString == "STUDENTREG"){
@@ -171,11 +172,40 @@ char* EncoderDecoder::encode(const std::string& msg, string& size) {
 //    }
 //}
 }
+const string EncoderDecoder::decode(char c) {
+    //result = "";
+    if (len == 2) {
+        opCode = bytesToShort(decodeBytes);
+    }
+
+    if (opCode == 12) { //ACK
+        if (len == 2)
+            result.append("ACK ");
+        if (len >= 4 && c == '\0') {
+            short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
+            msgOp += (short) (decodeBytes[3] & 0xff);
+            result.append("0");
+            result = result + to_string(msgOp);
+            len = 0;
+            opCode = 0;
+            result.append(vecBytes->begin() + 4, vecBytes->end() + 1);
+            vecBytes->clear();
+            return result;
+            result.append(" ");
+        }
+        if (c == '\0' && len > 3) {
+
+        }
+
+    }
+}
+
     short EncoderDecoder::bytesToShort(char *bytesArr) {
         short result = (short) ((bytesArr[0] & 0xff) << 8);
         result += (short) (bytesArr[1] & 0xff);
         return result;
     }
+
     void EncoderDecoder::shortToBytes(short num, char *bytesArr) {
         bytesArr[0] = ((num >> 8) & 0xFF);
         bytesArr[1] = (num & 0xFF);
