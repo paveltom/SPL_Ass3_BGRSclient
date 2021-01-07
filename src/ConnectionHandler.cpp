@@ -44,6 +44,7 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
         std::cerr << "recv failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
+
     return true;
 }
 
@@ -64,7 +65,7 @@ bool ConnectionHandler::sendBytes(const char bytes[], int bytesToWrite) {
 }
  
 bool ConnectionHandler::getLine(std::string& line) {
-    return getFrameAscii(line, '\n');
+    return getFrameAscii(line, '\0');
 }
 
 bool ConnectionHandler::sendLine(std::string& line) {
@@ -74,8 +75,8 @@ bool ConnectionHandler::sendLine(std::string& line) {
     res->clear();
     //temp = encdec_.encode(line);
     //sendBytes(temp,line.length()+1);
-    line.append("\n");
-    return sendFrameAscii(line, '\n');
+    //line.append("\n");
+    return sendFrameAscii(line, '\0');
 }
 
 
@@ -90,15 +91,18 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 		{
 			return false;
 		}
-		result = encdec_.decode(ch);
+            result = encdec_.decode(ch);
 //		if(ch!='\0')
 //			frame.append(1, ch);
+
 	}while (result == "");
     } catch (std::exception& e) {
 	std::cerr << "recv failed2 (Error: " << e.what() << ')' << std::endl;
 	return false;
     }
-    cout << result << endl;
+    //cout << result << endl;
+    frame.clear();
+    frame.append(result);
     return true;
 }
 
@@ -107,8 +111,7 @@ bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter)
     cout << frame << endl;
 	bool result = sendBytes(frame.c_str(),frame.length());
 	if(!result) return false;
-    return true;
-	//return sendBytes(&delimiter,1);
+	return sendBytes(&delimiter,1);
 }
  
 // Close down the connection properly.

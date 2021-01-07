@@ -33,8 +33,8 @@ vector<char>* EncoderDecoder::encode(string &msg) {
         }
 
         curI += password.length();
-        bytes[curI] = 0;
-        curI++;
+//        bytes[curI] = 0;
+//        curI++;
         //char* result = str
         for(int i = 0 ; i < curI ; i++){
             temp->push_back(bytes[i]);
@@ -180,19 +180,6 @@ const string EncoderDecoder::decode(char c) {
     if(len == 2){
         opCode = bytesToShort(decodeBytes);
     }
-//    short opCode = bytesToShort(bytes);
-//    result.append("" + opCode);
-
-//    result.append("" + msgOp);
-//    bool flag = true;
-//    int i = 0;
-//    while (flag) {
-//        if (bytes[i] == 0) {
-//            flag = false;
-//        }
-//        result += bytes[i];
-//        i++;
-//    }
 
     if (opCode == 12) { //ACK
         if(len == 2)
@@ -208,17 +195,23 @@ const string EncoderDecoder::decode(char c) {
             len = 0;
             opCode = 0;
             result.append(vecBytes->begin()+4,vecBytes->end()+1);
+            vecBytes->clear();
             return result;
         }
 
     }
     if (opCode == 13) { //ERROR
-        if(len = 2)
+        if(len == 2)
             result.append("ERROR ");
-        if(len == 4) {
+        if(len >= 4 && c=='\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
             result = result + to_string(msgOp);
+            result.append(vecBytes->begin()+4,vecBytes->end()+1);
+            len = 0;
+            opCode = 0;
+            vecBytes->clear();
+            return result;
         }
     }
     decodeBytes[len] = c;
