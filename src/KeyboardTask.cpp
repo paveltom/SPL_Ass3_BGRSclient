@@ -18,7 +18,7 @@ void KeyboardTask::run() {
         char buf[bufsize];
         std::cin.getline(buf, bufsize);
         std::string line(buf);
-        int len = line.length();
+        //int len = line.length();
         if (!(_ch.sendLine(line))) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
