@@ -4,15 +4,14 @@
 
 int main(int argc, char** argv) {
 
-//    if (argc < 3) {
-//        cerr << "Usage: " << argv[0] << " host port" << endl << endl;
-//        return -1;
-//    }
+    if (argc < 3) {
+        std::cerr << "Usage: " << argv[0] << " host port" << std::endl << std::endl;
+        return -1;
+    }
 
-//    string host = argv[1];
-//    short port = atoi(argv[2]);
-    std::string host = "127.0.0.1";
-    short port = 7777;
+    std::string host = argv[1];
+    short port = atoi(argv[2]);
+
     
     ConnectionHandler connectionHandler(host, port);
     if (!connectionHandler.connect()) {
@@ -26,10 +25,38 @@ int main(int argc, char** argv) {
     NetTask netTask(connectionHandler, 2, mutex);
 
     std::thread th1(&Task::run, &keyboardTask);
-    std::thread th2(&Task::run, &netTask);
+    //std::thread th2(&Task::run, &netTask);
 
     th1.join(); // or detach()?
-    th2.join(); //or detach()?
+    //th2.join(); //or detach()?
+
+
+    while (1) {
+        const short bufsize = 1024;
+        char buf[bufsize];
+        //char bufNet[bufsize];
+        std::cin.getline(buf, bufsize);
+        std::string line(buf);
+        int len=line.length();
+        if (!connectionHandler.sendLine(line)) {
+            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            break;
+        }
+
+//        std::string answer;
+//
+//        if (!connectionHandler.getLine(answer)) {
+//            std::cout << "Disconnected. Exiting...\n" << std::endl;
+//            break;
+//        }
+
+//        len=answer.length();
+//
+        if (line == "LOGOUT") {
+            std::cout << "Exiting...\n" << std::endl;
+            break;
+        }
+    }
 
 
     return 0;
