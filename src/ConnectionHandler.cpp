@@ -98,7 +98,7 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
             {
                 return false;
             }
-            result = encdec.decode(ch);
+            result = encdec->decode(ch);
 //		if(ch!='\0')
 //			frame.append(1, ch);
 
