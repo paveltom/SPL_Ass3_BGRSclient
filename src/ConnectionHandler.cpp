@@ -8,7 +8,7 @@ using std::cerr;
 using std::endl;
 using std::string;
  
-ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){}
+ConnectionHandler::ConnectionHandler(string host, short port, EncoderDecoder& encdec): host_(host), port_(port), io_service_(), socket_(io_service_),encdec_(encdec){}
     
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -68,12 +68,20 @@ bool ConnectionHandler::getLine(std::string& line) {
 }
 
 bool ConnectionHandler::sendLine(std::string& line) {
+    vector<char>* res = encdec_.encode(line);
+    line = "";
+    line.append(res->begin(),res->end()+1);
+    res->clear();
+    //temp = encdec_.encode(line);
+    //sendBytes(temp,line.length()+1);
+    line.append("\n");
     return sendFrameAscii(line, '\n');
 }
 
 
 bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
     char ch;
+    string result = "";
     // Stop when we encounter the null character.
     // Notice that the null character is not appended to the frame string.
     try {
@@ -82,21 +90,25 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 		{
 			return false;
 		}
-		if(ch!='\0')
-			frame.append(1, ch);
-	}while (delimiter != ch);
+		result = encdec_.decode(ch);
+//		if(ch!='\0')
+//			frame.append(1, ch);
+	}while (result == "");
     } catch (std::exception& e) {
 	std::cerr << "recv failed2 (Error: " << e.what() << ')' << std::endl;
 	return false;
     }
+    cout << result << endl;
     return true;
 }
 
 
 bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
-	bool result=sendBytes(frame.c_str(),frame.length());
+    cout << frame << endl;
+	bool result = sendBytes(frame.c_str(),frame.length());
 	if(!result) return false;
-	return sendBytes(&delimiter,1);
+    return true;
+	//return sendBytes(&delimiter,1);
 }
  
 // Close down the connection properly.

@@ -12,8 +12,8 @@ int main(int argc, char** argv) {
     std::string host = argv[1];
     short port = atoi(argv[2]);
 
-    
-    ConnectionHandler connectionHandler(host, port);
+    EncoderDecoder* encdec = new EncoderDecoder();
+    ConnectionHandler connectionHandler(host, port, *encdec );
     if (!connectionHandler.connect()) {
         std::cerr << "Cannot connect to " << host << ":" << port << std::endl;
         return 1;
@@ -57,7 +57,8 @@ int main(int argc, char** argv) {
             break;
         }
     }
-    th2.join(); //or detach()?
+    th2.detach();
+     //or detach()?
 
     return 0;
 }
