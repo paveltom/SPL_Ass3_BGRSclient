@@ -7,7 +7,7 @@ all: BGRSclient
 BGRSclient: bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o
 	@echo 'Building target: BGRSclient'
 	@echo 'Invoking: C++ Linker'
-	g++ $(CFLAGS) -o bin/BGRSclient bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o $(LDFLAGS)
+	g++ -o bin/BGRSclient bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o $(LDFLAGS)
 	@echo 'Finished building target: BGRSclient'
 	@echo ' '
 
