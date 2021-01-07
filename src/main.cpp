@@ -21,14 +21,14 @@ int main(int argc, char** argv) {
 
     std::mutex mutex;//probably not needed
 
-    KeyboardTask keyboardTask(connectionHandler, 1, mutex);
+    //KeyboardTask keyboardTask(connectionHandler, 1, mutex);
     NetTask netTask(connectionHandler, 2, mutex);
 
-    std::thread th1(&Task::run, &keyboardTask);
-    //std::thread th2(&Task::run, &netTask);
+    //std::thread th1(&Task::run, &keyboardTask);
+    std::thread th2(&Task::run, &netTask);
 
-    th1.join(); // or detach()?
-    //th2.join(); //or detach()?
+    // or detach()?
+    //th1.join();
 
 
     while (1) {
@@ -57,7 +57,7 @@ int main(int argc, char** argv) {
             break;
         }
     }
-
+    th2.join(); //or detach()?
 
     return 0;
 }
