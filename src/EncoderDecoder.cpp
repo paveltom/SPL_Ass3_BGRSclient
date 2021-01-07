@@ -7,6 +7,7 @@ EncoderDecoder::EncoderDecoder() {
 //
 //}
 vector<char>* EncoderDecoder::encode(string &msg) {
+    //decodeBytes[1<<10];
     vector<char> *temp = new vector<char>;
     char bytes[1<<10];
     std::string delimiter = " ";
@@ -184,19 +185,20 @@ const string EncoderDecoder::decode(char c) {
     if (opCode == 12) { //ACK
         if(len == 2)
         result.append("ACK ");
-        if(len == 4) {
+        if(len >= 4 && c=='\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
             result.append("0");
             result = result + to_string(msgOp);
-            result.append(" ");
-        }
-        if(c=='\0' && len > 3){
             len = 0;
             opCode = 0;
             result.append(vecBytes->begin()+4,vecBytes->end()+1);
             vecBytes->clear();
             return result;
+            result.append(" ");
+        }
+        if(c=='\0' && len > 3){
+
         }
 
     }
@@ -215,7 +217,7 @@ const string EncoderDecoder::decode(char c) {
         }
     }
     decodeBytes[len] = c;
-    vecBytes->push_back(decodeBytes[len]);
+    vecBytes->push_back(c);
     len++;
     return "";
 }
