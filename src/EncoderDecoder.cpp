@@ -199,7 +199,7 @@ const string EncoderDecoder::decode(char c) {
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;
-            result.append(vecBytes->begin() + 4, vecBytes->end() + 1);
+            result.append(vecBytes->begin() + 4, vecBytes->end());
             vecBytes->clear();
             return result;
             result.append(" ");
@@ -216,7 +216,7 @@ const string EncoderDecoder::decode(char c) {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
             result = result + to_string(msgOp);
-            result.append(vecBytes->begin() + 4, vecBytes->end() + 1);
+            result.append(vecBytes->begin() + 4, vecBytes->end());
             len = 0;
             opCode = 0;
             vecBytes->clear();
