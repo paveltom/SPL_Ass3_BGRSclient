@@ -30,10 +30,14 @@ int main(int argc, char** argv) {
     th2.detach();
 
     while (1) {
-        //std::lock_guard<std::mutex> lockGuard(mutex);
         const short bufsize = 1024;
         char buf[bufsize];
-        std::cin.getline(buf, bufsize);
+        bool write = false;
+        while (!write) {
+            std::lock_guard<std::mutex> lockGuard(mutex);
+            std::cin.getline(buf, bufsize);
+            write = true;
+        }
         std::string line(buf);;
         if (!connectionHandler.sendBytes(line)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;

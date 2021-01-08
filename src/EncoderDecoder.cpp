@@ -172,32 +172,51 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
 //    }
 //}
 }
+
 const string EncoderDecoder::decode(char c) {
     //result = "";
-    if (len == 2) {
+    if(len == 2){
         opCode = bytesToShort(decodeBytes);
     }
 
     if (opCode == 12) { //ACK
-        if (len == 2)
+        if(len == 2)
             result.append("ACK ");
-        if (len >= 4 && c == '\0') {
+        if(len >= 4 && c=='\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
             result.append("0");
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;
-            result.append(vecBytes->begin() + 4, vecBytes->end() + 1);
+            result.append(vecBytes->begin()+4,vecBytes->end()+1);
             vecBytes->clear();
             return result;
             result.append(" ");
         }
-        if (c == '\0' && len > 3) {
+        if(c=='\0' && len > 3){
 
         }
 
     }
+    if (opCode == 13) { //ERROR
+        if(len == 2)
+            result.append("ERROR ");
+        if(len >= 4 && c=='\0') {
+            short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
+            msgOp += (short) (decodeBytes[3] & 0xff);
+            result = result + to_string(msgOp);
+            result.append(vecBytes->begin()+4,vecBytes->end()+1);
+            len = 0;
+            opCode = 0;
+            vecBytes->clear();
+            return result;
+        }
+    }
+    decodeBytes[len] = c;
+    vecBytes->push_back(c);
+    len++;
+    return "";
 }
 
     short EncoderDecoder::bytesToShort(char *bytesArr) {
