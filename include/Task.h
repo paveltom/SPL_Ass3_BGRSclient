@@ -7,6 +7,7 @@
 #include <mutex>
 #include <thread>
 #include <boost/asio.hpp>
+#include <condition_variable>
 
 class Task{
 public:
@@ -33,18 +34,20 @@ class KeyboardTask : public Task{
 public:
     KeyboardTask(ConnectionHandler& ch, int id, std::mutex& mutex);
     virtual ~KeyboardTask();
-    KeyboardTask(const KeyboardTask& aCT); //copy constructor
 
     virtual void run();
 };
 
 class NetTask : public Task{
 public:
-    NetTask(ConnectionHandler& ch, int id, std::mutex& mutex);
+    NetTask(ConnectionHandler& ch, int id, std::mutex& mutex, std::condition_variable& cv);
     virtual ~NetTask();
-    NetTask(const NetTask& aCT); //copy constructor
-
     virtual void run();
+    bool isDone() const;
+
+private:
+    std::atomic_bool done;
+    std::condition_variable* _cv;
 };
 
 

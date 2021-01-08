@@ -21,45 +21,35 @@ int main(int argc, char** argv) {
         return 1;
     }
 
-    std::mutex mutex;//probably not needed
-    //KeyboardTask keyboardTask(connectionHandler, 1, mutex);
-    NetTask netTask(connectionHandler, 2, mutex);
-    std::thread::id mainThread = std::this_thread::get_id();
-    std::thread th2(&Task::run, &netTask);
+    std::mutex mutex_;//probably not needed
     std::condition_variable cv;
+    //boost::asio::io_service io;
+    //boost::asio::deadline_timer timer(io, boost::posix_time::seconds(1));
+    //KeyboardTask keyboardTask(connectionHandler, 1, mutex);
+    NetTask netTask(connectionHandler, 2, mutex_, cv);
+    //std::thread::id mainThread = std::this_thread::get_id();
+    std::thread th2(&Task::run, &netTask);
     th2.detach();
 
     while (1) {
         const short bufsize = 1024;
         char buf[bufsize];
-        //bool write = false;
-        //while (!write) {
-            //std::lock_guard<std::mutex> lockGuard(mutex);
-            std::cin.getline(buf, bufsize);
-        //    write = true;
-       // }
+        std::cin.getline(buf, bufsize);
         std::string line(buf);;
         if (!connectionHandler.sendBytes(line)) {
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
-/*
-STUDENTREG rick a123
-ADMINREG morty a123
-LOGIN morty a123
-COURSESTAT 530
-STUDENTSTAT rick
-*/
-
-        //cv.notify_all();
         if (line == "LOGOUT") {
-            std::cout << "Exiting...\n" << std::endl;
-            break;
+            std::unique_lock<std::mutex> uniqueLock(mutex_);
+            cv.wait(uniqueLock);
+            if (netTask.isDone()) {
+                std::cout << "mainExiting...\n" << std::endl;
+                break;
+            }
         }
+        //memset(buf, 0 , 1024);
     }
-    boost::asio::io_service io;
-    boost::asio::deadline_timer timer(io, boost::posix_time::seconds(1));
-    timer.wait();
     return 0;
 }
 
