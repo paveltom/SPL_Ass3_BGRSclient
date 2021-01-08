@@ -8,6 +8,7 @@ EncoderDecoder::EncoderDecoder() {}
 //}
 char* EncoderDecoder::encode(const std::string& msg, string& size, char* output) {
     static char bytes[1 << 10];
+    memset(bytes, 0 , 1024);
     std::string delimiter = " ";
     std::string opString = msg.substr(0, msg.find(delimiter));
     std::string restOfMsg = msg.substr(msg.find(delimiter) + 1);
@@ -171,7 +172,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return bytes;
     }
-    if (opString.compare("MYCOURSES")) {
+    if (opString =="MYCOURSES") {
         short op = 11;
         shortToBytes(op, bytes);
         size = to_string(2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -195,7 +196,8 @@ const string EncoderDecoder::decode(char c) {
         if (len >= 4 && c == '\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
-            result.append("0");
+            if (msgOp < 10)
+                result.append("0");
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;
