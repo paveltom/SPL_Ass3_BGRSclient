@@ -18,8 +18,8 @@ ConnectionHandler::~ConnectionHandler() {
 }
  
 bool ConnectionHandler::connect() {
-    std::cout << "Starting connect to " 
-        << host_ << ":" << port_ << std::endl;
+    //std::cout << "Starting connect to "
+       // << host_ << ":" << port_ << std::endl;
     try {
 		tcp::endpoint endpoint(boost::asio::ip::address::from_string(host_), port_); // the server endpoint
 		boost::system::error_code error;
@@ -28,7 +28,7 @@ bool ConnectionHandler::connect() {
 			throw boost::system::system_error(error);
     }
     catch (std::exception& e) {
-        std::cerr << "Connection failed (Error: " << e.what() << ')' << std::endl;
+        //std::cerr << "Connection failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
     return true;
@@ -44,7 +44,7 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 		if(error)
 			throw boost::system::system_error(error);
     } catch (std::exception& e) {
-        std::cerr << "recv getBytes failed (Error: " << e.what() << ')' << std::endl;
+        //std::cerr << "recv getBytes failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
     return true;
@@ -65,7 +65,7 @@ bool ConnectionHandler::sendBytes(const std::string& msg) {
 		if(error)
 			throw boost::system::system_error(error);
     } catch (std::exception& e) {
-        std::cerr << "recv sendBytes failed (Error: " << e.what() << ')' << std::endl;
+        //std::cerr << "recv sendBytes failed (Error: " << e.what() << ')' << std::endl;
         return false;
     }
     return true;
@@ -103,7 +103,7 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 
         }while (result == "");
     } catch (std::exception& e) {
-        std::cerr << "recv failed2 (Error: " << e.what() << ')' << std::endl;
+        //std::cerr << "recv failed2 (Error: " << e.what() << ')' << std::endl;
         return false;
     }
     //cout << result << endl;
@@ -176,6 +176,6 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
         try {
             socket_.close();
         } catch (...) {
-            std::cout << "closing failed: connection already closed" << std::endl;
+            //std::cout << "closing failed: connection already closed" << std::endl;
         }
     }

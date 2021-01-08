@@ -37,14 +37,14 @@ int main(int argc, char** argv) {
         std::cin.getline(buf, bufsize);
         std::string line(buf);;
         if (!connectionHandler.sendBytes(line)) {
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            //std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
         if (line == "LOGOUT") {
             std::unique_lock<std::mutex> uniqueLock(mutex_);
             cv.wait(uniqueLock);
             if (netTask.isDone()) {
-                std::cout << "mainExiting...\n" << std::endl;
+                //std::cout << "mainExiting...\n" << std::endl;
                 break;
             }
         }

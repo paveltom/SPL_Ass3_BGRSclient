@@ -17,7 +17,7 @@ void NetTask::run() {
     while (1) {
         std::string line;
         if (!_ch.getLine(line)) {
-            std::cout << "NetTask: Disconnected. Exiting...\n" << std::endl;
+            //std::cout << "NetTask: Disconnected. Exiting...\n" << std::endl;
             break;
         }
 
@@ -25,7 +25,7 @@ void NetTask::run() {
 
         if (line == "ACK 04\n") {
             done = true;
-            std::cout << "netTaskExiting...\n" << std::endl;
+            //std::cout << "netTaskExiting...\n" << std::endl;
             _cv->notify_all();
             break;
         }
