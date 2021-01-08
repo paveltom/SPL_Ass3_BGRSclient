@@ -24,13 +24,13 @@ void NetTask::run() {
         }
         //int len = line.length();
         //line.resize(len - 1); ?????????????????????????????????????????????????????
-        bool write = false;
-        while (!write) {
-            std::lock_guard<std::mutex> lockGuard(mutex);
+        //bool write = false;
+        //while (!write) {
+            //std::lock_guard<std::mutex> lockGuard(mutex);
             std::cout << line << std::endl;
-            write = true;
-        }
-        if (line == "ACK 4") {
+            //write = true;
+        //}
+        if (line == "ACK 04") {
             std::cout << "Exiting...\n" << std::endl;
             break;
         }

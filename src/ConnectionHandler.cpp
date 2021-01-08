@@ -54,8 +54,7 @@ bool ConnectionHandler::sendBytes(const std::string& msg) {
     std::string size("0");
     char bytes[1<<10];
     encdec->encode(msg, size, bytes);
-    int len = std::stoi(size) + 2; //encoderDecoder adds 2 zeros to bytes
-
+    int len = std::stoi(size) + 1; //encoderDecoder adds 2 zeros to bytes
 
     int tmp = 0;
 	boost::system::error_code error;
@@ -166,9 +165,9 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 ////    std::string size("0");
 ////    char* bytes = encdec->encode(frame, size);
 ////    int len = std::stoi(size);
-//    //bool result=sendBytes(frame.c_str(),frame.length());
-//	//if(!result) return false;
-//	//return sendBytes(&delimiter,1);
+//    bool result=sendBytes(frame.c_str(),frame.length());
+//	if(!result) return false;
+//	return sendBytes(&delimiter,1);
 //}
 
 
