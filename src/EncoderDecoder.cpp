@@ -34,33 +34,38 @@ vector<char>* EncoderDecoder::encode(string &msg) {
         }
 
         curI += password.length();
-//        bytes[curI] = 0;
-//        curI++;
+        bytes[curI] = 0;
+        curI++;
         //char* result = str
         for(int i = 0 ; i < curI ; i++){
             temp->push_back(bytes[i]);
         }
         return temp;
     }
-    if(opString == "STUDENTREG"){
+    if(opString == "STUDENTREG") {
         short op = 2;
-        shortToBytes(op,bytes);
+        shortToBytes(op, bytes);
+
+        //msg = (op & 0xFF);;
         int curI = 2;
         std::string userName = restOfMsg.substr(0, restOfMsg.find(delimiter));
-        for(int i = 0; i < userName.length() ; i++){
+        for (int i = 0; i < userName.length(); i++) {
             bytes[curI + i] = userName[i];
         }
+
         curI += userName.length();
         bytes[curI] = 0;
         curI++;
-        std::string password = restOfMsg.substr(restOfMsg.find(delimiter)+1);
-        for(int i = 0 ; i < password.length() ; i++){
+        std::string password = restOfMsg.substr(restOfMsg.find(delimiter) + 1);
+        for (int i = 0; i < password.length(); i++) {
             bytes[curI + i] = password[i];
         }
+
         curI += password.length();
         bytes[curI] = 0;
         curI++;
-        for(int i = 0 ; i < curI ; i++){
+        //char* result = str
+        for (int i = 0; i < curI; i++) {
             temp->push_back(bytes[i]);
         }
         return temp;
@@ -68,11 +73,14 @@ vector<char>* EncoderDecoder::encode(string &msg) {
     if(opString =="LOGIN"){
         short op = 3;
         shortToBytes(op,bytes);
+
+        //msg = (op & 0xFF);;
         int curI = 2;
         std::string userName = restOfMsg.substr(0, restOfMsg.find(delimiter));
         for(int i = 0; i < userName.length() ; i++){
             bytes[curI + i] = userName[i];
         }
+
         curI += userName.length();
         bytes[curI] = 0;
         curI++;
@@ -80,9 +88,11 @@ vector<char>* EncoderDecoder::encode(string &msg) {
         for(int i = 0 ; i < password.length() ; i++){
             bytes[curI + i] = password[i];
         }
+
         curI += password.length();
         bytes[curI] = 0;
         curI++;
+        //char* result = str
         for(int i = 0 ; i < curI ; i++){
             temp->push_back(bytes[i]);
         }
@@ -101,7 +111,7 @@ vector<char>* EncoderDecoder::encode(string &msg) {
         shortToBytes(op,bytes);
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
-        bytes[3] = (courseNum & 0xFF);
+        bytes[3] = ((courseNum  & 0xFF));
         for(int i = 0 ; i < 4 ; i++){
             temp->push_back(bytes[i]);
         }
@@ -178,6 +188,9 @@ vector<char>* EncoderDecoder::encode(string &msg) {
 }
 const string EncoderDecoder::decode(char c) {
     //result = "";
+    if(len ==0){
+        result = "";
+    }
     if(len == 2){
         opCode = bytesToShort(decodeBytes);
     }
@@ -192,14 +205,14 @@ const string EncoderDecoder::decode(char c) {
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;
-            result.append(vecBytes->begin()+4,vecBytes->end()+1);
+            result.append(vecBytes->begin()+4,vecBytes->end());
             vecBytes->clear();
             return result;
             result.append(" ");
         }
-        if(c=='\0' && len > 3){
-
-        }
+//        if(c=='\0' && len > 3){
+//
+//        }
 
     }
     if (opCode == 13) { //ERROR
@@ -209,7 +222,7 @@ const string EncoderDecoder::decode(char c) {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
             result = result + to_string(msgOp);
-            result.append(vecBytes->begin()+4,vecBytes->end()+1);
+            result.append(vecBytes->begin()+4,vecBytes->end());
             len = 0;
             opCode = 0;
             vecBytes->clear();

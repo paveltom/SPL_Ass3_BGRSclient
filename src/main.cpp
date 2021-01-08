@@ -56,6 +56,7 @@ int main(int argc, char** argv) {
             std::cout << "Exiting...\n" << std::endl;
             break;
         }
+        line.clear();
     }
     th2.detach();
      //or detach()?

@@ -72,6 +72,7 @@ bool ConnectionHandler::sendLine(std::string& line) {
     vector<char>* res = encdec_.encode(line);
     line = "";
     line.append(res->begin(),res->end()+1);
+    //line += "\0";
     res->clear();
     //temp = encdec_.encode(line);
     //sendBytes(temp,line.length()+1);
@@ -108,11 +109,12 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 }
 
 
-bool ConnectionHandler::sendFrameAscii(const std::string& frame, char delimiter) {
+bool ConnectionHandler::sendFrameAscii(const string& frame, char delimiter) {
    cout << frame << endl;
-	bool result = sendBytes(frame.c_str(),frame.length());
-	if(!result) return false;
-	return sendBytes(&delimiter,1);
+	bool result = sendBytes(frame.c_str(),frame.length()-1);
+
+	//if(!result) return false;
+	//return sendBytes(&delimiter,1);
 }
  
 // Close down the connection properly.

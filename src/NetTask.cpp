@@ -16,16 +16,19 @@ void NetTask::run() {
         const short bufsize = 1024;
         char buf[bufsize];
         std::string line(buf);
+        //line.clear();
         if (!_ch.getLine(line)) {
+            std::cout << "getLine error" << std::endl;
             std::cout << "Disconnected. Exiting...\n" << std::endl;
             break;
         }
         //int len = line.length();
         //line.resize(len - 1); ?????????????????????????????????????????????????????
-        std::cout << line;
+        std::cout << line<< std::endl;
         if (line == "ACK 4") {
             std::cout << "Exiting...\n" << std::endl;
             break;
         }
+        line.clear();
     }
 }
