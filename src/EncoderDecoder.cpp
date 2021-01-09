@@ -196,8 +196,8 @@ const string EncoderDecoder::decode(char c) {
         if (len >= 4 && c == '\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
-            if (msgOp < 10)
-                result.append("0");
+//            if (msgOp < 10)
+//                result.append("0");
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;

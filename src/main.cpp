@@ -49,6 +49,7 @@ int main(int argc, char** argv) {
             }
         }
         //memset(buf, 0 , 1024);
+        connectionHandler.close();
     }
     return 0;
 }
