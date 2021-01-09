@@ -88,7 +88,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short op = 4;
         shortToBytes(op, bytes);
 
-        size = to_string(2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(1); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[2] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[3] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -102,7 +102,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
 
-        size = to_string(4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -114,7 +114,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -126,7 +126,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -154,7 +154,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -166,7 +166,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -175,7 +175,7 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
     if (opString =="MYCOURSES") {
         short op = 11;
         shortToBytes(op, bytes);
-        size = to_string(2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(1); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         std::memcpy(output, bytes, 2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[2] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         output[3] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -206,10 +206,6 @@ const string EncoderDecoder::decode(char c) {
             return result;
             result.append(" ");
         }
-        if (c == '\0' && len > 3) {
-
-        }
-
     }
     if (opCode == 13) { //ERROR
         if (len == 2)
