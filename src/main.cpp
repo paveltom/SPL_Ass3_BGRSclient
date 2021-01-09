@@ -38,7 +38,8 @@ int main(int argc, char** argv) {
         }
         if (line == "LOGOUT") {
             std::unique_lock<std::mutex> uniqueLock(mutex_);
-            cv.wait(uniqueLock);
+//            cv.wait(uniqueLock);
+            cv.wait_for(uniqueLock, std::chrono::seconds{2});
             if (netTask.isDone()) {
                 //std::cout << "mainExiting...\n" << std::endl;
                 break;

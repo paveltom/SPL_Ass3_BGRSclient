@@ -214,11 +214,11 @@ const string EncoderDecoder::decode(char c) {
     if (opCode == 13) { //ERROR
         if (len == 2)
             result.append("ERROR ");
-        if (len >= 4 && c == '\0') {
+        if (len >= 3) {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
-            msgOp += (short) (decodeBytes[3] & 0xff);
+            msgOp += (short) (c & 0xff);
             result = result + to_string(msgOp);
-            result.append(vecBytes->begin() + 4, vecBytes->end());
+            //result.append(vecBytes->begin() + 4, vecBytes->end());
             len = 0;
             opCode = 0;
             vecBytes->clear();
