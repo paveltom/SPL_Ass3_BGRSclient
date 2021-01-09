@@ -4,31 +4,35 @@
 #include <iostream>
 #include <mutex>
 #include <thread>
+#include <condition_variable>
 
-NetTask::NetTask(ConnectionHandler& ch, int id, std::mutex& mutex) : Task(ch, id, mutex) {}
+NetTask::NetTask(ConnectionHandler& ch, int id, std::mutex& mutex, std::condition_variable& cv) : Task(ch, id, mutex) {
+    done = false;
+    _cv = &cv;
+}
 
 NetTask::~NetTask() = default;
-
-NetTask::NetTask(const NetTask& aCT) = default;
-
 void NetTask::run() {
+
     while (1) {
-        const short bufsize = 1024;
-        char buf[bufsize];
-        std::string line(buf);
-        //line.clear();
+        std::string line;
         if (!_ch.getLine(line)) {
-            std::cout << "getLine error" << std::endl;
-            std::cout << "Disconnected. Exiting...\n" << std::endl;
+            std::cout << "NetTask: Disconnected. Exiting...\n" << std::endl;
             break;
         }
-        //int len = line.length();
-        //line.resize(len - 1); ?????????????????????????????????????????????????????
-        std::cout << line<< std::endl;
-        if (line == "ACK 4") {
-            std::cout << "Exiting...\n" << std::endl;
+
+        std::cout << line << std::endl;
+
+        if (line == "ACK 4\n") {
+            done = true;
+            //std::cout << "netTaskExiting...\n" << std::endl;
+            _cv->notify_all();
             break;
         }
-        line.clear();
+        _cv->notify_all();//!!!!!!!! maybe not needed??????????????????????????????????????
     }
+}
+
+bool NetTask::isDone() const {
+    return done;
 }

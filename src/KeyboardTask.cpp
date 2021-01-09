@@ -10,7 +10,7 @@ KeyboardTask::KeyboardTask(ConnectionHandler& ch, int id, std::mutex& mutex) : T
 
 KeyboardTask::~KeyboardTask() = default;
 
-KeyboardTask::KeyboardTask(const KeyboardTask& aCT) = default;
+//KeyboardTask::KeyboardTask(const KeyboardTask& aCT) = default;
 
 void KeyboardTask::run() {
     while (1) {

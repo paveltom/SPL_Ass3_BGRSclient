@@ -44,20 +44,20 @@ vector<char>* EncoderDecoder::encode(string &msg) {
     }
     if(opString == "STUDENTREG") {
         short op = 2;
-        shortToBytes(op, bytes);
+        shortToBytes(op,bytes);
 
         //msg = (op & 0xFF);;
         int curI = 2;
         std::string userName = restOfMsg.substr(0, restOfMsg.find(delimiter));
-        for (int i = 0; i < userName.length(); i++) {
+        for(int i = 0; i < userName.length() ; i++){
             bytes[curI + i] = userName[i];
         }
 
         curI += userName.length();
         bytes[curI] = 0;
         curI++;
-        std::string password = restOfMsg.substr(restOfMsg.find(delimiter) + 1);
-        for (int i = 0; i < password.length(); i++) {
+        std::string password = restOfMsg.substr(restOfMsg.find(delimiter)+1);
+        for(int i = 0 ; i < password.length() ; i++){
             bytes[curI + i] = password[i];
         }
 
@@ -65,7 +65,7 @@ vector<char>* EncoderDecoder::encode(string &msg) {
         bytes[curI] = 0;
         curI++;
         //char* result = str
-        for (int i = 0; i < curI; i++) {
+        for(int i = 0 ; i < curI ; i++){
             temp->push_back(bytes[i]);
         }
         return temp;
@@ -201,7 +201,7 @@ const string EncoderDecoder::decode(char c) {
         if(len >= 4 && c=='\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
-            result.append("0");
+            //result.append("0");
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;
@@ -218,11 +218,11 @@ const string EncoderDecoder::decode(char c) {
     if (opCode == 13) { //ERROR
         if(len == 2)
             result.append("ERROR ");
-        if(len >= 4 && c=='\0') {
+        if(len == 3) {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
-            msgOp += (short) (decodeBytes[3] & 0xff);
+            msgOp += (short) (c & 0xff);
             result = result + to_string(msgOp);
-            result.append(vecBytes->begin()+4,vecBytes->end());
+//            result.append(vecBytes->begin()+4,vecBytes->end());
             len = 0;
             opCode = 0;
             vecBytes->clear();

@@ -8,7 +8,9 @@ using std::cerr;
 using std::endl;
 using std::string;
  
-ConnectionHandler::ConnectionHandler(string host, short port, EncoderDecoder& encdec): host_(host), port_(port), io_service_(), socket_(io_service_),encdec_(encdec){}
+ConnectionHandler::ConnectionHandler(string host, short port): host_(host), port_(port), io_service_(), socket_(io_service_){
+    encdec_ = new EncoderDecoder();
+}
     
 ConnectionHandler::~ConnectionHandler() {
     close();
@@ -69,7 +71,7 @@ bool ConnectionHandler::getLine(std::string& line) {
 }
 
 bool ConnectionHandler::sendLine(std::string& line) {
-    vector<char>* res = encdec_.encode(line);
+    vector<char>* res = encdec_->encode(line);
     line = "";
     line.append(res->begin(),res->end()+1);
     //line += "\0";
@@ -92,7 +94,7 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 		{
 			return false;
 		}
-            result = encdec_.decode(ch);
+            result = encdec_->decode(ch);
 //		if(ch!='\0')
 //			frame.append(1, ch);
 
@@ -110,10 +112,9 @@ bool ConnectionHandler::getFrameAscii(std::string& frame, char delimiter) {
 
 
 bool ConnectionHandler::sendFrameAscii(const string& frame, char delimiter) {
-   cout << frame << endl;
-	bool result = sendBytes(frame.c_str(),frame.length()-1);
+   //cout << frame << endl;
+	return sendBytes(frame.c_str(),frame.length()-1);
 
-	//if(!result) return false;
 	//return sendBytes(&delimiter,1);
 }
  
