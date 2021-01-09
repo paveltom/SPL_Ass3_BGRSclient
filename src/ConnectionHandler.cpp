@@ -44,7 +44,7 @@ bool ConnectionHandler::getBytes(char bytes[], unsigned int bytesToRead) {
 		if(error)
 			throw boost::system::system_error(error);
     } catch (std::exception& e) {
-        std::cerr << "recv getBytes failed (Error: " << e.what() << ')' << std::endl;
+        std::cerr << "recv getBytes failed (Error: " << e.what() << ')' << std::endl << error.message() << std::endl;
         return false;
     }
     return true;
@@ -54,9 +54,9 @@ bool ConnectionHandler::sendBytes(const std::string& msg) {
     std::string size("0");
     char bytes[1<<10];
     encdec->encode(msg, size, bytes);
-    int len = std::stoi(size) + 1; //encoderDecoder adds 2 zeros to bytes
+    int len = std::stoi(size)+1; //int len = std::stoi(size) + 1
 
-    int tmp = 0;
+    size_t tmp = 0;
 	boost::system::error_code error;
     try {
         while (!error && len > tmp ) {

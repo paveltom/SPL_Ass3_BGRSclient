@@ -46,7 +46,7 @@ public:
     bool isDone() const;
 
 private:
-    std::atomic_bool done;
+    bool done;
     std::condition_variable* _cv;
 };
 

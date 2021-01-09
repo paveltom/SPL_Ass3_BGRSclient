@@ -22,12 +22,8 @@ int main(int argc, char** argv) {
     }
 
     std::mutex mutex_;//probably not needed
-    std::condition_variable cv;
-    //boost::asio::io_service io;
-    //boost::asio::deadline_timer timer(io, boost::posix_time::seconds(1));
-    //KeyboardTask keyboardTask(connectionHandler, 1, mutex);
+    std::condition_variable cv;\
     NetTask netTask(connectionHandler, 2, mutex_, cv);
-    //std::thread::id mainThread = std::this_thread::get_id();
     std::thread th2(&Task::run, &netTask);
     th2.detach();
 
@@ -48,11 +44,18 @@ int main(int argc, char** argv) {
                 break;
             }
         }
-        //memset(buf, 0 , 1024);
-        connectionHandler.close();
+        //
+        // memset(buf, 0 , 1024);
+        //connectionHandler.close();
     }
     return 0;
 }
+
+
+//boost::asio::io_service io;
+//boost::asio::deadline_timer timer(io, boost::posix_time::seconds(1));
+//KeyboardTask keyboardTask(connectionHandler, 1, mutex);
+//std::thread::id mainThread = std::this_thread::get_id();
 
 
 

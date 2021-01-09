@@ -6,9 +6,7 @@
 #include <thread>
 #include <condition_variable>
 
-NetTask::NetTask(ConnectionHandler& ch, int id, std::mutex& mutex, std::condition_variable& cv) : Task(ch, id, mutex) {
-    done = false;
-    _cv = &cv;
+NetTask::NetTask(ConnectionHandler& ch, int id, std::mutex& mutex, std::condition_variable& cv) : Task(ch, id, mutex), done(false), _cv(&cv) {
 }
 
 NetTask::~NetTask() = default;
@@ -23,7 +21,7 @@ void NetTask::run() {
 
         std::cout << line << std::endl;
 
-        if (line == "ACK 04\n") {
+        if (line == "ACK 4\n") {
             done = true;
             //std::cout << "netTaskExiting...\n" << std::endl;
             _cv->notify_all();
