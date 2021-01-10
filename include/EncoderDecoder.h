@@ -9,6 +9,9 @@ using boost::asio::ip::tcp;
 using namespace std;
 
 class EncoderDecoder {
+public:
+    virtual ~EncoderDecoder();
+
 private:
     int len;
     char decodeBytes[1<<10];
@@ -18,8 +21,8 @@ private:
 public:
     EncoderDecoder();
 
-    char* encode(const std::string& msg, string& size, char* output); //returns bytes[]
-    const string decode( char c); // why const char in argument??
+    char* encode(const std::string& msg, string& size, char* output);
+    const string decode( char c);
     short bytesToShort(char* bytesArr);
     void shortToBytes(short num, char* bytesArr);
 

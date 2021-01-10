@@ -23,13 +23,6 @@ private:
     std::mutex& _mutex;
 };
 
-//        for (int i= 0; i < 100; i++){
-//            std::lock_guard<std::mutex> lock(_mutex); // constructor locks the mutex while destructor (out of scope) unlocks it
-//            std::cout << i << ") Task " << _id << " is working" << std::endl;
-//        }
-//        throw std::invalid_argument( "Not implemented" );
-//    }
-
 class KeyboardTask : public Task{
 public:
     KeyboardTask(ConnectionHandler& ch, int id, std::mutex& mutex);

@@ -4,10 +4,10 @@ LDFLAGS:=-lboost_system -pthread -lboost_thread
 
 all: BGRSclient
 
-BGRSclient: bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o
+BGRSclient: bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o
 	@echo 'Building target: BGRSclient'
 	@echo 'Invoking: C++ Linker'
-	g++ -o bin/BGRSclient bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o bin/KeyboardTask.o $(LDFLAGS)
+	g++ -o bin/BGRSclient bin/main.o bin/ConnectionHandler.o bin/EncoderDecoder.o bin/Task.o bin/NetTask.o $(LDFLAGS)
 	@echo 'Finished building target: BGRSclient'
 	@echo ' '
 
@@ -26,9 +26,6 @@ bin/Task.o: src/Task.cpp
 
 bin/NetTask.o: src/NetTask.cpp
 	g++ $(CFLAGS) -o bin/NetTask.o src/NetTask.cpp
-
-bin/KeyboardTask.o: src/KeyboardTask.cpp
-	g++ $(CFLAGS) -o bin/KeyboardTask.o src/KeyboardTask.cpp
 
 
 .PHONY: clean

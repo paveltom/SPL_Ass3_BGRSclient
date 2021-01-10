@@ -10,5 +10,5 @@ set(CMAKE_CXX_STANDARD 11)
 
 link_libraries("-lboost_system")
 link_libraries(-pthread)
-add_executable(BGRSclient src/main.cpp src/ConnectionHandler.cpp src/EncoderDecoder.cpp src/Task.cpp src/KeyboardTask.cpp src/NetTask.cpp)
+add_executable(BGRSclient src/main.cpp src/ConnectionHandler.cpp src/EncoderDecoder.cpp src/Task.cpp src/NetTask.cpp)
 

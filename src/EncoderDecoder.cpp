@@ -1,11 +1,12 @@
 #include "../include/EncoderDecoder.h"
-#include "../include/ConnectionHandler.h"
 
 #include <boost/lexical_cast.hpp>
 EncoderDecoder::EncoderDecoder() {}
-//const string EncoderDecoder::decode(const char *bytes) {
-//
-//}
+
+EncoderDecoder::~EncoderDecoder() {
+    delete(vecBytes);
+}
+
 char* EncoderDecoder::encode(const std::string& msg, string& size, char* output) {
     static char bytes[1 << 10];
     memset(bytes, 0 , 1024);
@@ -30,10 +31,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         }
         curI += password.length();
         bytes[curI] = 0;
-        size = to_string(curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI + 1] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(curI);
+        std::memcpy(output, bytes, curI);
+        output[curI] = 0;
+        output[curI + 1] = 0;
         return bytes;
     }
     if (opString == "STUDENTREG") {
@@ -54,10 +55,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         curI += password.length();
         bytes[curI] = 0;
 
-        size = to_string(curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI + 1] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(curI);
+        std::memcpy(output, bytes, curI);
+        output[curI] = 0;
+        output[curI + 1] = 0;
         return bytes;
     }
     if (opString == "LOGIN") {
@@ -78,20 +79,20 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         curI += password.length();
         bytes[curI] = 0;
 
-        size = to_string(curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI + 1] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(curI);
+        std::memcpy(output, bytes, curI);
+        output[curI] = 0;
+        output[curI + 1] = 0;
         return bytes;
     }
     if (opString == "LOGOUT") {
         short op = 4;
         shortToBytes(op, bytes);
 
-        size = to_string(1); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[2] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[3] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(1);
+        std::memcpy(output, bytes, 2);
+        output[2] = 0;
+        output[3] = 0;
         return bytes;
     }
 
@@ -102,10 +103,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
 
-        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3);
+        std::memcpy(output, bytes, 4);
+        output[4] = 0;
+        output[5] = 0;
         return bytes;
     }
     if (opString == "KDAMCHECK") {
@@ -114,10 +115,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3);
+        std::memcpy(output, bytes, 4);
+        output[4] = 0;
+        output[5] = 0;
         return bytes;
     }
     if (opString == "COURSESTAT") {
@@ -126,10 +127,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3);
+        std::memcpy(output, bytes, 4);
+        output[4] = 0;
+        output[5] = 0;
         return bytes;
     }
     if (opString == "STUDENTSTAT") {
@@ -142,10 +143,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         }
         curI += userName.length();
         bytes[curI] = 0;
-        size = to_string(curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, curI); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[curI + 1] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(curI);
+        std::memcpy(output, bytes, curI);
+        output[curI] = 0;
+        output[curI + 1] = 0;
         return bytes;
     }
     if (opString == "ISREGISTERED") {
@@ -154,10 +155,10 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3);
+        std::memcpy(output, bytes, 4);
+        output[4] = 0;
+        output[5] = 0;
         return bytes;
     }
     if (opString == "UNREGISTER") {
@@ -166,19 +167,19 @@ char* EncoderDecoder::encode(const std::string& msg, string& size, char* output)
         short courseNum = boost::lexical_cast<short>(restOfMsg);
         bytes[2] = ((courseNum >> 8) & 0xFF);
         bytes[3] = (courseNum & 0xFF);
-        size = to_string(3); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 4); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[4] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[5] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(3);
+        std::memcpy(output, bytes, 4);
+        output[4] = 0;
+        output[5] = 0;
         return bytes;
     }
     if (opString =="MYCOURSES") {
         short op = 11;
         shortToBytes(op, bytes);
-        size = to_string(1); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        std::memcpy(output, bytes, 2); //!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[2] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        output[3] = 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        size = to_string(1);
+        std::memcpy(output, bytes, 2);
+        output[2] = 0;
+        output[3] = 0;
         return bytes;
     }
 }
@@ -196,15 +197,12 @@ const string EncoderDecoder::decode(char c) {
         if (len >= 4 && c == '\0') {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (decodeBytes[3] & 0xff);
-//            if (msgOp < 10)
-//                result.append("0");
             result = result + to_string(msgOp);
             len = 0;
             opCode = 0;
             result.append(vecBytes->begin() + 4, vecBytes->end());
             vecBytes->clear();
             return result;
-            result.append(" ");
         }
     }
     if (opCode == 13) { //ERROR
@@ -214,7 +212,6 @@ const string EncoderDecoder::decode(char c) {
             short msgOp = (short) ((decodeBytes[2] & 0xff) << 8);
             msgOp += (short) (c & 0xff);
             result = result + to_string(msgOp);
-            //result.append(vecBytes->begin() + 4, vecBytes->end());
             len = 0;
             opCode = 0;
             vecBytes->clear();
@@ -237,3 +234,5 @@ const string EncoderDecoder::decode(char c) {
         bytesArr[0] = ((num >> 8) & 0xFF);
         bytesArr[1] = (num & 0xFF);
     }
+
+
